@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/go-tfe"
-	"time"
 )
 
 func fetchAllOrgs(ctx context.Context, client *tfe.Client) ([]string, error) {
@@ -73,13 +72,6 @@ func fetchAllResources(ctx context.Context, client *tfe.Client, workspaceId stri
 	state, err := client.StateVersions.ReadCurrent(ctx, workspaceId)
 	if err != nil {
 		return nil, fmt.Errorf("could not fetch current state: %w", err)
-	}
-
-	for {
-		if state.ResourcesProcessed {
-			break
-		}
-		time.Sleep(time.Second)
 	}
 
 	return state.Resources, nil
